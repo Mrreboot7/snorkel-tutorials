@@ -1,4 +1,4 @@
-name: Docker Publish CI
+name: Docker Publish CI drybell
 on: [push]
 
 jobs:
@@ -7,8 +7,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build image
-        run: make build
+        run: docker build --build-arg TUTORIAL=drybell --tag=${{ secrets.DOCKER_USERNAME }}/snorkel-drybell:latest .
       - name: Log into registry
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       - name: Push image
-        run: make push
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/snorkel-drybell:latest

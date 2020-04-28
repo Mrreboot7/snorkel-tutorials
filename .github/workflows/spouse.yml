@@ -1,0 +1,14 @@
+name: Docker Publish CI spouse
+on: [push]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: docker build --build-arg TUTORIAL=spouse --tag=${{ secrets.DOCKER_USERNAME }}/snorkel-spouse:latest .
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Push image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/snorkel-spouse:latest
